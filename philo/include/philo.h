@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:43:09 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 10:14:21 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/27 12:55:17 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_vars	t_vars;
 
 typedef struct s_philo
 {
-	int			fork;
 	int			status;
 	int			nb_eat;
 	int			philo_nb;

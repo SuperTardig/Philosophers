@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:43:09 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 10:54:42 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/27 14:06:32 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <sys/stat.h>
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
@@ -22,6 +23,7 @@
 # include <limits.h>
 # include <pthread.h>
 # include <semaphore.h>
+# include <signal.h>
 
 # define THINK 1
 # define MAX_REP 4
@@ -30,11 +32,11 @@ typedef struct s_vars	t_vars;
 
 typedef struct s_philo
 {
-	int			fork;
 	int			status;
 	int			nb_eat;
 	int			philo_nb;
 	long		last_eat;
+	pid_t		pid;
 	t_vars		*vars;
 	pthread_t	thread;
 }	t_philo;

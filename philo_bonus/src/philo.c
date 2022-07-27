@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:44:06 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 10:55:06 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/27 14:06:43 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ int	check_status(t_vars *vars)
 
 void	end_philo(t_vars *vars)
 {
+	int	i;
+
+	i = 0;
+	while (i < vars->nb_philo)
+		kill(vars->philos[i++].pid, SIGINT);
 	sem_close(vars->msg);
 	sem_close(vars->check);
 	sem_close(vars->forks);

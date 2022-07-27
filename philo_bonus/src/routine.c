@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 11:10:26 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/27 14:06:29 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,17 @@ void	check_fork(t_philo *philo, t_vars *vars)
 	sem_wait(vars->forks);
 	print_msg(philo, "has taken a fork");
 	print_msg(philo, "is eating");
-	philo->last_eat = get_time() - vars->begin_time;
 	check_rep(philo, vars);
 	my_sleep(vars->tte);
+	philo->last_eat = get_time() - vars->begin_time;
 	sem_post(vars->forks);
 	sem_post(vars->forks);
 	print_msg(philo, "is sleeping");
 	my_sleep(vars->tts);
 }
 
-void	*routine(void *temp)
+void	routine(t_philo *philo, t_vars *vars)
 {
-	t_philo	*philo;
-	t_vars	*vars;
-
-	philo = (t_philo *) temp;
-	vars = philo->vars;
 	if (philo->philo_nb % 2 == 0)
 		usleep(15000);
 	while (philo->status != MAX_REP)
@@ -61,7 +56,6 @@ void	*routine(void *temp)
 		check_fork(philo, vars);
 		print_msg(philo, "is thinking");
 	}
-	return (NULL);
 }
 
 void	create_sems(t_vars *vars)
@@ -84,13 +78,13 @@ void	make_philos(t_vars *vars)
 	create_sems(vars);
 	while (i < vars->nb_philo)
 	{
-		vars->philos[i].fork = 1;
 		vars->philos[i].vars = vars;
 		vars->philos[i].philo_nb = i + 1;
 		vars->philos[i].status = THINK;
 		vars->philos[i].nb_eat = 0;
-		pthread_create(&vars->philos[i].thread, NULL,
-			routine, (void *) &vars->philos[i]);
+		vars->philos[i].pid = fork();
+		if (vars->philos[i].pid == 0)
+			routine (&vars->philos[i], vars);
 		i++;
 	}
 }

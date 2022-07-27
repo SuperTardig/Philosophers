@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 10:08:58 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/27 12:51:20 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	make_philos(t_vars *vars)
 	vars->begin_time = get_time();
 	while (i < vars->nb_philo)
 	{
-		vars->philos[i].fork = 1;
 		vars->philos[i].vars = vars;
 		vars->philos[i].philo_nb = i + 1;
 		vars->philos[i].status = THINK;

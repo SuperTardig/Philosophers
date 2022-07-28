@@ -6,36 +6,23 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:44:06 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 14:06:43 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/28 14:01:41 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	check_status(t_vars *vars)
+void	*check_kill(void *temp)
 {
-	long	current;
-	int		philo;
+	t_vars	*vars;
+	int		i;
 
-	philo = 0;
-	while (1)
-	{
-		current = get_time() - vars->begin_time - vars->philos[philo].last_eat;
-		if (current > vars->ttd)
-		{
-			print_msg(&vars->philos[philo], "has died");
-			return (1);
-		}
-		if (vars->rep != -2)
-		{
-			if (vars->nb_philo == vars->nb_eat)
-				return (1);
-		}
-		philo++;
-		if (philo == vars->nb_philo)
-			philo = 0;
-	}
-	return (0);
+	vars = temp;
+	sem_wait(vars->kill);
+	i = 0;
+	while (i < vars->nb_philo)
+		kill(vars->philos[i++].pid, SIGINT);
+	return (NULL);
 }
 
 void	end_philo(t_vars *vars)
@@ -43,28 +30,33 @@ void	end_philo(t_vars *vars)
 	int	i;
 
 	i = 0;
+	pthread_create(&vars->thread, NULL,
+		check_kill, (void *) vars);
 	while (i < vars->nb_philo)
-		kill(vars->philos[i++].pid, SIGINT);
+		waitpid(vars->philos[i++].pid, NULL, 0);
 	sem_close(vars->msg);
+	sem_close(vars->kill);
 	sem_close(vars->check);
 	sem_close(vars->forks);
+	sem_unlink("/msg");
+	sem_unlink("/kill");
+	sem_unlink("/check");
+	sem_unlink("/forks");
 	free(vars->philos);
+	exit (0);
 }
 
 int	main(int ac, char *av[])
 {
 	t_vars	vars;
+	int		i;
 
+	i = 0;
 	if (ac > 4 && ac < 7)
 	{
 		if (parsing(&vars, av, ac) == 0)
 			return (0);
 		make_philos(&vars);
-		if (check_status(&vars) == 1)
-		{
-			end_philo(&vars);
-			return (0);
-		}
 	}
 	else
 	{

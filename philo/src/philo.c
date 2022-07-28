@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:44:06 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 10:09:40 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/28 14:24:51 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,19 @@ int	check_status(t_vars *vars)
 	{
 		current = get_time() - vars->begin_time - vars->philos[philo].last_eat;
 		pthread_mutex_lock(&vars->check);
-		if (current > vars->ttd)
+		if (current >= vars->ttd)
 		{
+			vars->status = DEAD;
 			print_msg(&vars->philos[philo], "has died");
+			pthread_mutex_lock(&vars->msg);
 			return (1);
 		}
-		pthread_mutex_unlock(&vars->check);
 		if (vars->rep != -2)
 		{
 			if (vars->nb_philo == vars->nb_eat)
 				return (1);
 		}
+		pthread_mutex_unlock(&vars->check);
 		philo++;
 		if (philo == vars->nb_philo)
 			philo = 0;

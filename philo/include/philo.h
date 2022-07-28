@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:43:09 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 12:55:17 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/28 14:24:40 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # define THINK 1
 # define MAX_REP 4
+# define DEAD 3
 
 typedef struct s_vars	t_vars;
 

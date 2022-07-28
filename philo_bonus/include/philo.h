@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:43:09 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 14:06:32 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/28 11:42:58 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 # define THINK 1
 # define MAX_REP 4
+# define DEAD 3
 
 typedef struct s_vars	t_vars;
 
@@ -52,9 +53,11 @@ typedef struct s_vars
 	int			nb_philo;
 	long		begin_time;
 	sem_t		*msg;
+	sem_t		*kill;
 	sem_t		*check;
 	sem_t		*forks;
 	t_philo		*philos;
+	pthread_t	thread;
 }	t_vars;
 
 long	ft_atol(char *str);
@@ -63,5 +66,6 @@ void	print_msg(t_philo *philo, char *str);
 long	get_time(void);
 void	make_philos(t_vars *vars);
 void	my_sleep(int ttw);
+void	end_philo(t_vars *vars);
 
 #endif

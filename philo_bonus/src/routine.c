@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 14:06:29 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/28 14:05:06 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,50 @@ void	check_fork(t_philo *philo, t_vars *vars)
 	philo->last_eat = get_time() - vars->begin_time;
 	sem_post(vars->forks);
 	sem_post(vars->forks);
-	print_msg(philo, "is sleeping");
-	my_sleep(vars->tts);
+}
+
+void	*check_life(void *temp)
+{
+	t_philo	*philo;
+	long	diff;
+
+	philo = temp;
+	while (1)
+	{
+		sem_wait(philo->vars->check);
+		diff = get_time() - philo->vars->begin_time - philo->last_eat;
+		if (diff > philo->vars->ttd)
+		{
+			sem_post(philo->vars->kill);
+			print_msg(philo, "has died");
+			free(philo->vars->philos);
+			exit (0);
+		}
+		sem_post(philo->vars->check);
+	}
+	return (NULL);
 }
 
 void	routine(t_philo *philo, t_vars *vars)
 {
+	pthread_create(&philo->thread, NULL,
+		check_life, (void *) philo);
 	if (philo->philo_nb % 2 == 0)
 		usleep(15000);
 	while (philo->status != MAX_REP)
 	{
 		check_fork(philo, vars);
+		if (philo->status == MAX_REP)
+		{
+			sem_post(vars->kill);
+			free(vars->philos);
+			exit (0);
+		}
+		print_msg(philo, "is sleeping");
+		my_sleep(vars->tts);
 		print_msg(philo, "is thinking");
 	}
+	pthread_join(philo->thread, NULL);
 }
 
 void	create_sems(t_vars *vars)
@@ -63,7 +94,9 @@ void	create_sems(t_vars *vars)
 	sem_unlink("/msg");
 	sem_unlink("/check");
 	sem_unlink("/forks");
+	sem_unlink("/kill");
 	vars->msg = sem_open("/msg", O_CREAT | O_EXCL, S_IRWXU, 1);
+	vars->kill = sem_open("/kill", O_CREAT | O_EXCL, S_IRWXU, 0);
 	vars->check = sem_open("/check", O_CREAT | O_EXCL, S_IRWXU, 1);
 	vars->forks = sem_open("/forks", O_CREAT | O_EXCL, S_IRWXU, vars->nb_philo);
 }
@@ -73,7 +106,7 @@ void	make_philos(t_vars *vars)
 	int	i;
 
 	i = 0;
-	vars->philos = malloc(sizeof(t_philo) * vars->nb_philo + 1);
+	vars->philos = malloc(sizeof(t_philo) * vars->nb_philo);
 	vars->begin_time = get_time();
 	create_sems(vars);
 	while (i < vars->nb_philo)
@@ -87,4 +120,5 @@ void	make_philos(t_vars *vars)
 			routine (&vars->philos[i], vars);
 		i++;
 	}
+	end_philo(vars);
 }

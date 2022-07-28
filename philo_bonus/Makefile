@@ -6,7 +6,7 @@
 #    By: bperron <bperron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/26 13:16:40 by bperron           #+#    #+#              #
-#    Updated: 2022/07/18 11:26:37 by bperron          ###   ########.fr        #
+#    Updated: 2022/07/28 13:53:42 by bperron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC = gcc
 CFLAGS = -Werror -Wall -Wextra -g
 RM = rm -rf
 
-NAME = philo
+NAME = philo_bonus
 
 HEADERS = include/philo.h
 SRCS = src/philo.c src/parsing.c src/utils.c src/routine.c

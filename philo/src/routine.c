@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 12:51:20 by bperron          ###   ########.fr       */
+/*   Updated: 2022/07/28 14:24:31 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*routine(void *temp)
 	vars = philo->vars;
 	if (philo->philo_nb % 2 == 0)
 		usleep(15000);
-	while (philo->status != MAX_REP)
+	while (philo->status != MAX_REP && philo->vars->status != DEAD)
 	{
 		check_fork(philo, vars);
 		print_msg(philo, "is thinking");

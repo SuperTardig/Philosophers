@@ -6,13 +6,13 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/08/01 12:05:03 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/01 14:30:03 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	check_rep(t_philo *philo, t_vars *vars)
+static void	check_rep(t_philo *philo, t_vars *vars)
 {
 	if (vars->rep != -2)
 	{
@@ -40,6 +40,7 @@ void	check_fork(t_philo *philo, t_vars *vars)
 	print_msg(philo, "is eating");
 	philo->last_eat = get_time() - vars->begin_time;
 	my_sleep(vars->tte);
+	check_rep(philo, vars);
 	pthread_mutex_unlock(&vars->forks[philo->philo_nb - 1]);
 	pthread_mutex_unlock(&vars->forks[next - 1]);
 }
@@ -64,8 +65,6 @@ void	*routine(void *temp)
 		}
 		if (philo->vars->status != DEAD)
 			print_msg(philo, "is thinking");
-		if (philo->vars->status != DEAD)
-			check_rep(philo, vars);
 	}
 	return (NULL);
 }

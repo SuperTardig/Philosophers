@@ -6,11 +6,24 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:44:06 by bperron           #+#    #+#             */
-/*   Updated: 2022/08/01 12:06:00 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/01 14:31:49 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+static int	check_rep(t_vars *vars)
+{
+	if (vars->rep != -2)
+	{
+		if (vars->nb_philo == vars->nb_eat)
+		{
+			vars->status = DEAD;
+			return (1);
+		}
+	}
+	return (0);
+}
 
 int	check_status(t_vars *vars)
 {
@@ -22,7 +35,7 @@ int	check_status(t_vars *vars)
 	{
 		current = get_time() - vars->begin_time - vars->philos[philo].last_eat;
 		pthread_mutex_lock(&vars->check);
-		if (current >= vars->ttd)
+		if (current > vars->ttd)
 		{
 			vars->status = DEAD;
 			print_msg(&vars->philos[philo], "has died");
@@ -30,11 +43,8 @@ int	check_status(t_vars *vars)
 			return (1);
 		}
 		pthread_mutex_unlock(&vars->check);
-		if (vars->rep != -2)
-		{
-			if (vars->nb_philo == vars->nb_eat)
-				return (1);
-		}
+		if (check_rep(vars) == 1)
+			return (1);
 		philo++;
 		if (philo == vars->nb_philo)
 			philo = 0;

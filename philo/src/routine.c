@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/28 14:24:31 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/01 12:05:03 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,9 @@ void	check_fork(t_philo *philo, t_vars *vars)
 	print_msg(philo, "has taken a fork");
 	print_msg(philo, "is eating");
 	philo->last_eat = get_time() - vars->begin_time;
-	check_rep(philo, vars);
 	my_sleep(vars->tte);
 	pthread_mutex_unlock(&vars->forks[philo->philo_nb - 1]);
 	pthread_mutex_unlock(&vars->forks[next - 1]);
-	print_msg(philo, "is sleeping");
-	my_sleep(vars->tts);
 }
 
 void	*routine(void *temp)
@@ -58,8 +55,17 @@ void	*routine(void *temp)
 		usleep(15000);
 	while (philo->status != MAX_REP && philo->vars->status != DEAD)
 	{
-		check_fork(philo, vars);
-		print_msg(philo, "is thinking");
+		if (philo->vars->status != DEAD)
+			check_fork(philo, vars);
+		if (philo->vars->status != DEAD)
+		{
+			print_msg(philo, "is sleeping");
+			my_sleep(vars->tts);
+		}
+		if (philo->vars->status != DEAD)
+			print_msg(philo, "is thinking");
+		if (philo->vars->status != DEAD)
+			check_rep(philo, vars);
 	}
 	return (NULL);
 }

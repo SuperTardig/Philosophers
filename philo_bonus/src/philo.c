@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:44:06 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/28 14:01:41 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/01 13:15:04 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*check_kill(void *temp)
 	sem_wait(vars->kill);
 	i = 0;
 	while (i < vars->nb_philo)
-		kill(vars->philos[i++].pid, SIGINT);
+		kill(vars->philos[i++].pid, SIGTERM);
 	return (NULL);
 }
 

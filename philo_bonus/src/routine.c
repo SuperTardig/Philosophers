@@ -6,24 +6,11 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/28 14:05:06 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/01 13:40:57 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
-void	check_rep(t_philo *philo, t_vars *vars)
-{
-	if (vars->rep != -2)
-	{
-		philo->nb_eat++;
-		if (philo->nb_eat == vars->rep)
-		{
-			vars->nb_eat++;
-			philo->status = MAX_REP;
-		}
-	}
-}
 
 void	check_fork(t_philo *philo, t_vars *vars)
 {
@@ -40,7 +27,7 @@ void	check_fork(t_philo *philo, t_vars *vars)
 	print_msg(philo, "is eating");
 	check_rep(philo, vars);
 	my_sleep(vars->tte);
-	philo->last_eat = get_time() - vars->begin_time;
+	philo->last_eat = get_time() - philo->begin_time;
 	sem_post(vars->forks);
 	sem_post(vars->forks);
 }
@@ -54,11 +41,12 @@ void	*check_life(void *temp)
 	while (1)
 	{
 		sem_wait(philo->vars->check);
-		diff = get_time() - philo->vars->begin_time - philo->last_eat;
+		diff = get_time() - philo->begin_time - philo->last_eat;
 		if (diff > philo->vars->ttd)
 		{
-			sem_post(philo->vars->kill);
 			print_msg(philo, "has died");
+			sem_post(philo->vars->kill);
+			philo->status = DEAD;
 			free(philo->vars->philos);
 			exit (0);
 		}
@@ -71,6 +59,7 @@ void	routine(t_philo *philo, t_vars *vars)
 {
 	pthread_create(&philo->thread, NULL,
 		check_life, (void *) philo);
+	philo->begin_time = get_time();
 	if (philo->philo_nb % 2 == 0)
 		usleep(15000);
 	while (philo->status != MAX_REP)
@@ -82,9 +71,13 @@ void	routine(t_philo *philo, t_vars *vars)
 			free(vars->philos);
 			exit (0);
 		}
-		print_msg(philo, "is sleeping");
-		my_sleep(vars->tts);
-		print_msg(philo, "is thinking");
+		if (philo->status != DEAD)
+		{
+			print_msg(philo, "is sleeping");
+			my_sleep(vars->tts);
+		}
+		if (philo->status != DEAD)
+			print_msg(philo, "is thinking");
 	}
 	pthread_join(philo->thread, NULL);
 }
@@ -107,7 +100,6 @@ void	make_philos(t_vars *vars)
 
 	i = 0;
 	vars->philos = malloc(sizeof(t_philo) * vars->nb_philo);
-	vars->begin_time = get_time();
 	create_sems(vars);
 	while (i < vars->nb_philo)
 	{

@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 10:53:19 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/27 13:48:50 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/01 13:05:33 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	parsing(t_vars *vars, char **av, int ac)
 	else
 		vars->rep = -2;
 	if (vars->tts == -1 || vars->tte == -1 || vars->ttd == -1
-		|| vars->nb_philo == -1 || vars->rep == -1)
+		|| vars->nb_philo == -1 || vars->rep == -1 || vars->rep == 0)
 	{
 		printf("Error\nA bad argument was passed\n");
 		return (0);

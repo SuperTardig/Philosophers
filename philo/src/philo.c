@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:44:06 by bperron           #+#    #+#             */
-/*   Updated: 2022/07/28 14:24:51 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/01 12:06:00 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ int	check_status(t_vars *vars)
 			pthread_mutex_lock(&vars->msg);
 			return (1);
 		}
+		pthread_mutex_unlock(&vars->check);
 		if (vars->rep != -2)
 		{
 			if (vars->nb_philo == vars->nb_eat)
 				return (1);
 		}
-		pthread_mutex_unlock(&vars->check);
 		philo++;
 		if (philo == vars->nb_philo)
 			philo = 0;
@@ -46,6 +46,7 @@ void	end_philo(t_vars *vars)
 {
 	int	i;
 
+	usleep(20000);
 	i = -1;
 	while (++i < vars->nb_philo)
 		pthread_mutex_destroy(&vars->forks[i]);

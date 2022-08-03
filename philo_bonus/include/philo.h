@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/27 09:43:09 by bperron           #+#    #+#             */
-/*   Updated: 2022/08/01 13:41:10 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/03 11:14:27 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_philo
 	int			nb_eat;
 	int			philo_nb;
 	long		last_eat;
-	long		begin_time;
 	pid_t		pid;
 	t_vars		*vars;
 	pthread_t	thread;
@@ -52,6 +51,7 @@ typedef struct s_vars
 	int			status;
 	int			nb_eat;
 	int			nb_philo;
+	long		begin_time;
 	sem_t		*msg;
 	sem_t		*kill;
 	sem_t		*check;

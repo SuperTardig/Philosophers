@@ -6,7 +6,7 @@
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:21:37 by bperron           #+#    #+#             */
-/*   Updated: 2022/08/01 13:40:53 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/03 11:15:12 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	check_rep(t_philo *philo, t_vars *vars)
 void	print_msg(t_philo *philo, char *str)
 {
 	sem_wait(philo->vars->msg);
-	printf("%ld %d %s\n", (get_time() - philo->begin_time),
+	printf("%ld %d %s\n", (get_time() - philo->vars->begin_time),
 		philo->philo_nb, str);
 	sem_post(philo->vars->msg);
 }

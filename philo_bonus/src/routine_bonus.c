@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   routine_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bperron <bperron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 11:22:35 by bperron           #+#    #+#             */
-/*   Updated: 2022/08/03 11:15:00 by bperron          ###   ########.fr       */
+/*   Updated: 2022/08/08 08:56:28 by bperron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "../include/philo_bonus.h"
 
 void	check_fork(t_philo *philo, t_vars *vars)
 {

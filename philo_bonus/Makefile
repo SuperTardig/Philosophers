@@ -6,7 +6,7 @@
 #    By: bperron <bperron@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/26 13:16:40 by bperron           #+#    #+#              #
-#    Updated: 2022/07/28 13:53:42 by bperron          ###   ########.fr        #
+#    Updated: 2022/08/08 08:56:56 by bperron          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ RM = rm -rf
 
 NAME = philo_bonus
 
-HEADERS = include/philo.h
-SRCS = src/philo.c src/parsing.c src/utils.c src/routine.c
+HEADERS = include/philo_bonus.h
+SRCS = src/philo_bonus.c src/parsing_bonus.c src/utils_bonus.c src/routine_bonus.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
